@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Station-Service Proche — Trouvez du carburant pas cher près de chez vous</title>
+<meta name="description" content="Station-Service Proche : calculatrices gratuites pour le coût du carburant, la consommation en L/100 km, la planification de trajet, le choix électrique ou essence et SP95 vs SP98. Comparez les carburants et économisez à la pompe.">
+<meta name="theme-color" content="#14532d">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<style>
+:root{--green:#14532d;--green2:#166534;--acc:#16a34a;--acc-d:#15803d;--acc-bg:#dcfce7;--bg:#f0fdf4;--card:#fff;--text:#1a2e22;--muted:#5b6b60;--border:#dbe7dd;--radius:14px;--shadow:0 1px 3px rgba(20,83,45,.08),0 4px 14px rgba(20,83,45,.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+a{color:var(--acc-d)}
+header{background:var(--green);color:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.header-in{display:flex;align-items:center;gap:14px;padding:13px 16px;max-width:1080px;margin:0 auto;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;flex:1;min-width:220px}
+.brand .mark{width:38px;height:38px;border-radius:9px;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:19px;flex:none}
+.brand b{font-size:19px;letter-spacing:.2px}
+.brand b span{color:#86efac}
+.brand small{display:block;font-size:11.5px;color:#bbf7d0;font-weight:400}
+nav.main-nav{display:flex;gap:4px;flex-wrap:wrap}
+nav.main-nav a{color:#d1fae5;text-decoration:none;font-size:14px;font-weight:600;padding:8px 11px;border-radius:8px}
+nav.main-nav a:hover{background:var(--green2);color:#fff}
+.hero{background:linear-gradient(135deg,var(--green) 0%,#166534 60%,#15803d 100%);color:#fff;padding:44px 0 40px}
+.hero h1{font-size:clamp(26px,5vw,40px);line-height:1.2;max-width:760px}
+.hero h1 span{color:#86efac}
+.hero p{color:#d1fae5;font-size:16px;max-width:720px;margin-top:12px}
+.hero .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.hero .badge{background:rgba(22,163,74,.2);border:1px solid rgba(134,239,172,.45);color:#bbf7d0;font-size:13px;font-weight:600;border-radius:999px;padding:6px 13px}
+section{padding:34px 0 8px}
+section h2{font-size:24px;margin-bottom:6px}
+.section-sub{color:var(--muted);font-size:15px;max-width:760px;margin-bottom:20px}
+.calc-grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:860px){.calc-grid{grid-template-columns:1fr 1fr}.calc-grid .wide{grid-column:1 / -1}}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px;border-top:4px solid var(--acc)}
+.card h3{font-size:18px;margin-bottom:2px}
+.card .tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-d)}
+.card .desc{font-size:14px;color:var(--muted);margin:6px 0 16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.field label small{font-weight:400;color:var(--muted)}
+.field input,.field select{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:inherit;outline:none;background:#fff;color:var(--text)}
+.field input:focus,.field select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(22,163,74,.18)}
+.field-row{display:grid;grid-template-columns:1fr;gap:0 12px}
+@media(min-width:560px){.field-row{grid-template-columns:1fr 1fr}}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--acc);color:#fff;border:0;border-radius:10px;padding:12px 22px;font-size:15px;font-weight:800;min-height:46px;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--acc-d)}
+.results{display:none;margin-top:16px}
+.results.show{display:block}
+.results h4{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:560px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
+.stat{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.stat.hero{background:var(--acc-bg);border-color:#bbf7d0}
+.stat .k{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-size:19px;font-weight:800;margin-top:3px;word-break:break-word}
+.stat.hero .v{color:#14532d}
+.stat.wide{grid-column:1 / -1}
+.verdict{margin-top:10px;border-radius:10px;padding:11px 14px;font-size:14px;font-weight:600}
+.verdict.ok{background:var(--acc-bg);color:#14532d}
+.verdict.warn{background:#fef9c3;color:#854d0e}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px}
+.formula{font-size:13px;color:var(--muted);background:#f8fafc;border:1px dashed var(--border);border-radius:8px;padding:8px 11px;margin-top:12px}
+.table-wrap{overflow-x:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th{background:var(--green);color:#fff;text-align:left;padding:11px 12px;font-size:13px}
+td{padding:10px 12px;border-bottom:1px solid var(--border)}
+tr:nth-child(even) td{background:#f8fafc}
+.guide-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.guide-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:960px){.guide-grid{grid-template-columns:1fr 1fr 1fr}}
+.guide{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 18px;border-left:4px solid var(--acc)}
+.guide .g-tag{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--acc-d)}
+.guide h3{font-size:16.5px;margin:5px 0 7px}
+.guide p{font-size:14px;color:#334155}
+.guide-link{margin-top:10px;font-size:14px;font-weight:700}
+.guide-link a{text-decoration:none}
+.guide-link a:hover{text-decoration:underline}
+.faq{max-width:820px}
+.faq-item{background:#fff;border-radius:12px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+.faq-item button{width:100%;text-align:left;background:none;border:0;padding:16px 18px;font-size:15.5px;font-weight:700;font-family:inherit;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.faq-item button .chev{color:var(--acc-d);font-size:20px;flex:none}
+.faq-item .answer{display:none;padding:0 18px 16px;font-size:14.5px;color:#334155}
+.faq-item.open .answer{display:block}
+.faq-item.open .chev{transform:rotate(45deg)}
+.about{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px}
+.about p{font-size:14.5px;color:#334155;margin-bottom:10px}
+footer{background:var(--green);color:#a7d8b5;margin-top:44px;padding:30px 0 26px}
+footer .cols{display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:640px){footer .cols{grid-template-columns:2fr 1fr 1fr}}
+footer h4{color:#fff;font-size:15px;margin-bottom:10px}
+footer p,footer a{font-size:13.5px;color:#a7d8b5;text-decoration:none}
+footer a:hover{color:#fff}
+footer ul{list-style:none}
+footer li{margin-bottom:6px}
+.copy{border-top:1px solid #166534;margin-top:22px;padding-top:16px;font-size:12.5px;text-align:center}
+.article{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;margin-top:28px}
+.article h1{font-size:28px;line-height:1.25;margin-bottom:10px}
+.article .lede{font-size:17px;color:#334155;margin-bottom:18px}
+.article h2{font-size:21px;margin:26px 0 10px}
+.article h3{font-size:17px;margin:20px 0 8px}
+.article p{margin-bottom:12px;font-size:15.5px;color:#1f2937}
+.article ul,.article ol{margin:0 0 14px 22px;font-size:15.5px;color:#1f2937}
+.article li{margin-bottom:6px}
+.article table{min-width:0}
+.back-link{display:inline-block;margin-top:8px;font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<header><div class="header-in">
+<a class="brand" href="https://stationserviceproche.github.io/"><span class="mark">S</span><span><b>Station-Service <span>Proche</span></b><small>Trouvez du carburant pas cher près de chez vous</small></span></a>
+<nav class="main-nav"><a href="https://stationserviceproche.github.io/#calculatrices">Calculatrices</a><a href="https://stationserviceproche.github.io/#carburants">Carburants</a><a href="https://stationserviceproche.github.io/#guides">Guides</a><a href="https://stationserviceproche.github.io/#faq">FAQ</a></nav>
+</div></header>
+<section class="hero"><div class="wrap">
+<h1>Trouvez du carburant <span>pas cher</span> près de chez vous</h1>
+<p>Calculez le coût de vos trajets, comparez l'essence, le diesel et l'électrique, et découvrez comment payer moins à la pompe — avec des outils gratuits, simples et sans inscription.</p>
+<div class="badges"><span class="badge">5 calculatrices gratuites</span><span class="badge">Prix en €/L</span><span class="badge">Consommation en L/100 km</span><span class="badge">Guides pratiques</span></div>
+</div></section>
+
+<main class="wrap">
+<section id="calculatrices">
+<h2>Nos calculatrices carburant</h2>
+<p class="section-sub">Entrez vos chiffres, cliquez sur « Calculer » et obtenez le résultat immédiatement. Toutes les calculatrices fonctionnent dans votre navigateur, sans envoi de données.</p>
+<div class="calc-grid">
+
+<div class="card">
+<span class="tag">Outil 1</span><h3>Calculatrice du coût du carburant</h3>
+<p class="desc">Combien coûte un trajet en carburant ? Indiquez la distance, votre consommation et le prix au litre.</p>
+<div class="field-row">
+<div class="field"><label for="c1-dist">Distance (km)</label><input id="c1-dist" type="number" min="1" step="any" value="100"></div>
+<div class="field"><label for="c1-cons">Consommation (L/100 km)</label><input id="c1-cons" type="number" min="0.1" step="any" value="6.5"></div>
+</div>
+<div class="field"><label for="c1-prix">Prix du carburant (€/L)</label><input id="c1-prix" type="number" min="0.01" step="any" value="1.75"></div>
+<div class="btn-row"><button class="btn" onclick="calc1()">Calculer le coût</button></div>
+<div class="results" id="r1"><h4>Résultat</h4><div class="stat-grid">
+<div class="stat"><div class="k">Carburant</div><div class="v" id="r1-lit">—</div></div>
+<div class="stat hero"><div class="k">Coût du trajet</div><div class="v" id="r1-cost">—</div></div>
+<div class="stat"><div class="k">Coût par km</div><div class="v" id="r1-km">—</div></div>
+</div><p class="formula">Litres = distance × consommation ÷ 100 &nbsp;·&nbsp; Coût = litres × prix au litre</p></div>
+</div>
+
+<div class="card">
+<span class="tag">Outil 2</span><h3>Planificateur de trajet</h3>
+<p class="desc">Préparez un long trajet : coût total, carburant nécessaire et nombre d'arrêts à prévoir.</p>
+<div class="field-row">
+<div class="field"><label for="c2-dist">Distance totale (km)</label><input id="c2-dist" type="number" min="1" step="any" value="600"></div>
+<div class="field"><label for="c2-cons">Consommation (L/100 km)</label><input id="c2-cons" type="number" min="0.1" step="any" value="6"></div>
+</div>
+<div class="field-row">
+<div class="field"><label for="c2-prix">Prix du carburant (€/L)</label><input id="c2-prix" type="number" min="0.01" step="any" value="1.80"></div>
+<div class="field"><label for="c2-tank">Réservoir (L)</label><input id="c2-tank" type="number" min="1" step="any" value="50"></div>
+</div>
+<div class="btn-row"><button class="btn" onclick="calc2()">Planifier le trajet</button></div>
+<div class="results" id="r2"><h4>Résultat</h4><div class="stat-grid">
+<div class="stat"><div class="k">Carburant total</div><div class="v" id="r2-lit">—</div></div>
+<div class="stat hero"><div class="k">Coût total</div><div class="v" id="r2-cost">—</div></div>
+<div class="stat"><div class="k">Arrêts carburant</div><div class="v" id="r2-stop">—</div></div>
+</div><div class="verdict ok" id="r2-msg"></div><p class="note">On suppose que vous partez avec le plein. Un arrêt compte chaque fois que le réservoir doit être rempli en route.</p></div>
+</div>
+
+<div class="card">
+<span class="tag">Outil 3</span><h3>Calculatrice de consommation (L/100 km)</h3>
+<p class="desc">Vous avez fait le plein et noté les kilomètres ? Calculez votre consommation réelle.</p>
+<div class="field-row">
+<div class="field"><label for="c3-lit">Carburant consommé (L)</label><input id="c3-lit" type="number" min="0.1" step="any" value="45"></div>
+<div class="field"><label for="c3-km">Distance parcourue (km)</label><input id="c3-km" type="number" min="1" step="any" value="650"></div>
+</div>
+<div class="btn-row"><button class="btn" onclick="calc3()">Calculer ma consommation</button></div>
+<div class="results" id="r3"><h4>Résultat</h4><div class="stat-grid">
+<div class="stat hero"><div class="k">Consommation</div><div class="v" id="r3-cons">—</div></div>
+<div class="stat"><div class="k">Km par litre</div><div class="v" id="r3-kml">—</div></div>
+<div class="stat"><div class="k">Coût aux 100 km*</div><div class="v" id="r3-cost">—</div></div>
+</div><div class="verdict ok" id="r3-msg"></div><p class="note">*Coût aux 100 km calculé avec un prix de 1,75 €/L. Pour mesurer : faites le plein, remettez le compteur à zéro, roulez, puis refaites le plein et notez les litres et les kilomètres.</p><p class="formula">Consommation (L/100 km) = litres ÷ kilomètres × 100</p></div>
+</div>
+
+<div class="card">
+<span class="tag">Outil 4</span><h3>Électrique vs essence</h3>
+<p class="desc">Comparez le coût annuel en énergie d'une voiture essence et d'une voiture électrique pour votre kilométrage.</p>
+<div class="field-row">
+<div class="field"><label for="c4-km">Kilomètres par an</label><input id="c4-km" type="number" min="100" step="any" value="15000"></div>
+<div class="field"><label for="c4-cons">Consommation essence (L/100 km)</label><input id="c4-cons" type="number" min="0.1" step="any" value="7"></div>
+</div>
+<div class="field-row">
+<div class="field"><label for="c4-prix">Prix de l'essence (€/L)</label><input id="c4-prix" type="number" min="0.01" step="any" value="1.80"></div>
+<div class="field"><label for="c4-kwh">Consommation électrique (kWh/100 km)</label><input id="c4-kwh" type="number" min="1" step="any" value="17"></div>
+</div>
+<div class="field"><label for="c4-pkwh">Prix de l'électricité (€/kWh, recharge à domicile)</label><input id="c4-pkwh" type="number" min="0.01" step="any" value="0.25"></div>
+<div class="btn-row"><button class="btn" onclick="calc4()">Comparer les deux</button></div>
+<div class="results" id="r4"><h4>Résultat — coût annuel en énergie</h4><div class="stat-grid">
+<div class="stat"><div class="k">Essence / an</div><div class="v" id="r4-gas">—</div></div>
+<div class="stat"><div class="k">Électrique / an</div><div class="v" id="r4-ev">—</div></div>
+<div class="stat hero"><div class="k">Économie / an</div><div class="v" id="r4-save">—</div></div>
+</div><div class="verdict ok" id="r4-msg"></div><p class="note">Ce calcul ne compte que l'énergie. L'assurance, l'entretien, l'achat et la revente ne sont pas inclus. La recharge publique rapide coûte souvent plus cher que la recharge à domicile.</p></div>
+</div>
+
+<div class="card wide">
+<span class="tag">Outil 5</span><h3>SP95 vs SP98 — calcul d'économie</h3>
+<p class="desc">Le SP98 coûte plus cher au litre, mais certains moteurs consomment un peu moins avec. Vérifiez si le SP98 vaut vraiment le coup pour vous.</p>
+<div class="field-row">
+<div class="field"><label for="c5-km">Kilomètres par an</label><input id="c5-km" type="number" min="100" step="any" value="15000"></div>
+<div class="field"><label for="c5-cons95">Consommation au SP95 (L/100 km)</label><input id="c5-cons95" type="number" min="0.1" step="any" value="6.5"></div>
+</div>
+<div class="field-row">
+<div class="field"><label for="c5-p95">Prix du SP95 (€/L)</label><input id="c5-p95" type="number" min="0.01" step="any" value="1.72"></div>
+<div class="field"><label for="c5-p98">Prix du SP98 (€/L)</label><input id="c5-p98" type="number" min="0.01" step="any" value="1.85"></div>
+</div>
+<div class="field"><label for="c5-cons98">Consommation au SP98 (L/100 km) <small>— mesurez-la, sinon gardez 6,4</small></label><input id="c5-cons98" type="number" min="0.1" step="any" value="6.4"></div>
+<div class="btn-row"><button class="btn" onclick="calc5()">Comparer SP95 et SP98</button></div>
+<div class="results" id="r5"><h4>Résultat — coût annuel</h4><div class="stat-grid">
+<div class="stat"><div class="k">SP95 / an</div><div class="v" id="r5-95">—</div></div>
+<div class="stat"><div class="k">SP98 / an</div><div class="v" id="r5-98">—</div></div>
+<div class="stat hero"><div class="k">Différence / an</div><div class="v" id="r5-diff">—</div></div>
+</div><div class="verdict ok" id="r5-msg"></div><p class="note">La plupart des moteurs ordinaires ne consomment pas moins au SP98 : la différence de prix est alors une dépense en plus. Suivez toujours le carburant recommandé dans le manuel de votre voiture.</p></div>
+</div>
+
+</div>
+</section>
+
+<section id="carburants">
+<h2>Les carburants en France — tableau de référence</h2>
+<p class="section-sub">Les prix sont indicatifs, à titre de référence seulement : ils varient selon les stations, les régions et les semaines. L'indice d'octane mesure la résistance du carburant à l'auto-allumage ; pour le diesel, on parle d'indice de cétane.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Carburant</th><th>Indice</th><th>Éthanol / composition</th><th>Véhicules concernés</th><th>Prix indicatif (€/L)</th></tr></thead>
+<tbody>
+<tr><td><strong>SP95 (Sans Plomb 95)</strong></td><td>Octane 95</td><td>Jusqu'à 5 % d'éthanol (E5)</td><td>La plupart des voitures essence</td><td>1,70 – 1,80</td></tr>
+<tr><td><strong>SP98 (Sans Plomb 98)</strong></td><td>Octane 98</td><td>Jusqu'à 5 % d'éthanol (E5)</td><td>Moteurs exigeants ou anciens, sportives</td><td>1,80 – 1,95</td></tr>
+<tr><td><strong>SP95-E10</strong></td><td>Octane 95</td><td>Jusqu'à 10 % d'éthanol (E10)</td><td>Voitures essence après 2000 (vérifier la compatibilité)</td><td>1,65 – 1,75</td></tr>
+<tr><td><strong>Diesel (gazole)</strong></td><td>Cétane ≥ 51</td><td>Sans éthanol ; B7 (7 % de biodiesel)</td><td>Voitures diesel, utilitaires, poids lourds</td><td>1,65 – 1,80</td></tr>
+<tr><td><strong>GPL (GPLc)</strong></td><td>Octane ~110</td><td>Propane + butane</td><td>Voitures équipées GPL (souvent bicarburation)</td><td>0,95 – 1,10</td></tr>
+<tr><td><strong>E85 (superéthanol)</strong></td><td>Octane ~105</td><td>65 à 85 % d'éthanol</td><td>Véhicules flex-fuel ou avec boîtier homologué</td><td>0,75 – 0,95</td></tr>
+</tbody></table></div>
+<p class="note">Prix indicatifs relevés à titre d'exemple en France métropolitaine. Vérifiez la compatibilité de votre véhicule avant d'utiliser E10, E85 ou GPL.</p>
+</section>
+
+<section id="guides">
+<h2>Guides pratiques</h2>
+<p class="section-sub">Des conseils simples pour payer moins cher, rouler plus sereinement et comprendre votre station-service.</p>
+<div class="guide-grid">
+<div class="guide"><span class="g-tag">Guide</span><h3>Comment trouver le carburant le moins cher près de chez vous</h3><p>Comparez les prix avant de partir, repérez les stations les moins chères et choisissez le bon moment pour faire le plein.</p><p class="guide-link"><a href="guides/trouver-carburant-moins-cher.html">Lire le guide →</a></p></div>
+<div class="guide"><span class="g-tag">Guide</span><h3>Les services des stations expliqués</h3><p>Lavage, gonflage, boutique, café, bornes de recharge : ce que proposent vraiment les stations et ce qui vaut le coup.</p><p class="guide-link"><a href="guides/services-stations-expliques.html">Lire le guide →</a></p></div>
+<div class="guide"><span class="g-tag">Guide</span><h3>10 façons d'économiser du carburant</h3><p>Conduite souple, pression des pneus, climatisation, poids inutile : dix gestes concrets qui réduisent votre consommation.</p><p class="guide-link"><a href="guides/10-facons-economiser-carburant.html">Lire le guide →</a></p></div>
+<div class="guide"><span class="g-tag">Guide</span><h3>Diesel vs essence — ce qu'il faut savoir</h3><p>Consommation, prix, entretien, revente : comment choisir entre un moteur diesel et un moteur essence en 2026.</p><p class="guide-link"><a href="guides/diesel-vs-essence.html">Lire le guide →</a></p></div>
+<div class="guide"><span class="g-tag">Guide</span><h3>Recharge des voitures électriques en station</h3><p>Bornes rapides, tarifs au kWh ou à la minute, badges et applications : tout pour recharger sans stress sur la route.</p><p class="guide-link"><a href="guides/recharge-voitures-electriques.html">Lire le guide →</a></p></div>
+<div class="guide"><span class="g-tag">Guide</span><h3>Conseils de sécurité en station la nuit</h3><p>Faire le plein après la tombée de la nuit : choisir une station éclairée, payer en sécurité et rester vigilant.</p><p class="guide-link"><a href="guides/securite-station-nuit.html">Lire le guide →</a></p></div>
+</div>
+</section>
+
+<section id="faq">
+<h2>Questions fréquentes</h2>
+<div class="faq">
+<div class="faq-item"><button onclick="this.parentElement.classList.toggle('open')">Quel carburant est le moins cher en France ? <span class="chev">+</span></button><div class="answer">Au litre, le GPL et l'E85 sont généralement les moins chers, devant le SP95-E10. Mais le vrai coût se mesure aux 100 km : une voiture qui consomme plus avec un carburant bon marché peut coûter autant qu'avec un carburant plus cher. Utilisez nos calculatrices pour comparer.</div></div>
+<div class="faq-item"><button onclick="this.parentElement.classList.toggle('open')">Le SP98 fait-il vraiment économiser du carburant ? <span class="chev">+</span></button><div class="answer">Pour la plupart des voitures ordinaires, non : le SP98 ne réduit pas la consommation de façon mesurable, donc son surcoût est une dépense en plus. Il reste utile pour les moteurs qui l'exigent ou les voitures anciennes. Mesurez votre consommation réelle avec l'outil 3 avant de décider.</div></div>
+<div class="faq-item"><button onclick="this.parentElement.classList.toggle('open')">Comment calculer ma consommation réelle en L/100 km ? <span class="chev">+</span></button><div class="answer">Faites le plein, remettez le compteur journalier à zéro, roulez normalement, puis refaites le plein : divisez les litres ajoutés par les kilomètres parcourus et multipliez par 100. Notre calculatrice fait ce calcul pour vous.</div></div>
+<div class="faq-item"><button onclick="this.parentElement.classList.toggle('open')">Une voiture électrique coûte-t-elle moins cher en énergie ? <span class="chev">+</span></button><div class="answer">En général oui, surtout si vous rechargez à domicile : à 15 000 km par an, l'énergie électrique coûte souvent deux à trois fois moins cher que l'essence. La recharge rapide sur autoroute est plus chère, mais reste en général moins coûteuse que l'essence.</div></div>
+<div class="faq-item"><button onclick="this.parentElement.classList.toggle('open')">Les prix affichés sur ce site sont-ils à jour ? <span class="chev">+</span></button><div class="answer">Non : les prix dans nos tableaux sont des exemples indicatifs. Les prix réels changent chaque semaine et varient d'une station à l'autre. Vérifiez toujours le prix affiché à la pompe ou sur un comparateur de prix officiel avant de faire le plein.</div></div>
+</div>
+</section>
+
+<section id="apropos">
+<h2>À propos de Station-Service Proche</h2>
+<div class="about">
+<p>Station-Service Proche est un site d'information gratuit pour les automobilistes en France. Nous proposons des calculatrices simples et des guides pratiques pour comprendre les carburants, comparer les coûts et adopter une conduite plus économique.</p>
+<p><strong>Avertissement :</strong> les informations de ce site sont fournies à titre informatif et ne remplacent pas le manuel de votre véhicule ni les conseils d'un professionnel. Les prix des carburants sont indicatifs et peuvent différer des prix réels. Ce site ne vend pas de carburant et n'est affilié à aucune marque de station-service.</p>
+</div>
+</section>
+</main>
+<footer><div class="wrap"><div class="cols">
+<div><h4>Station-Service Proche</h4><p>Des outils gratuits pour comparer les carburants, planifier vos trajets et économiser à la pompe. Les prix affichés sont des exemples : vérifiez toujours le prix réel à la station.</p></div>
+<div><h4>Guides</h4><ul>
+<li><a href="https://stationserviceproche.github.io/guides/trouver-carburant-moins-cher.html">Carburant le moins cher</a></li>
+<li><a href="https://stationserviceproche.github.io/guides/10-facons-economiser-carburant.html">Économiser du carburant</a></li>
+<li><a href="https://stationserviceproche.github.io/guides/diesel-vs-essence.html">Diesel vs essence</a></li>
+<li><a href="https://stationserviceproche.github.io/guides/recharge-voitures-electriques.html">Recharge électrique</a></li>
+</ul></div>
+<div><h4>À propos</h4><ul><li><a href="https://stationserviceproche.github.io/#apropos">À propos</a></li><li><a href="https://stationserviceproche.github.io/#faq">Questions fréquentes</a></li></ul></div>
+</div><div class="copy">© 2026 Station-Service Proche — Contenu informatif gratuit. Les prix des carburants varient selon les stations et les régions ; ce site ne vend pas de carburant.</div></div></footer>
+<script>
+function num(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)?0:v;}
+function eur(x){return x.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function show(id){document.getElementById(id).classList.add('show');}
+function calc1(){var d=num('c1-dist'),c=num('c1-cons'),p=num('c1-prix');if(d<=0||c<=0||p<=0){alert('Veuillez saisir des valeurs positives.');return;}var lit=d*c/100,cost=lit*p;document.getElementById('r1-lit').textContent=lit.toFixed(2)+' L';document.getElementById('r1-cost').textContent=eur(cost);document.getElementById('r1-km').textContent=eur(cost/d)+'/km';show('r1');}
+function calc2(){var d=num('c2-dist'),c=num('c2-cons'),p=num('c2-prix'),t=num('c2-tank');if(d<=0||c<=0||p<=0||t<=0){alert('Veuillez saisir des valeurs positives.');return;}var lit=d*c/100,cost=lit*p,stops=Math.max(0,Math.ceil(lit/t)-1);document.getElementById('r2-lit').textContent=lit.toFixed(1)+' L';document.getElementById('r2-cost').textContent=eur(cost);document.getElementById('r2-stop').textContent=stops;document.getElementById('r2-msg').textContent=stops===0?'Bonne nouvelle : un seul plein suffit pour ce trajet.':('Prévoyez '+stops+(stops>1?' arrêts carburant':' arrêt carburant')+' en route.');show('r2');}
+function calc3(){var l=num('c3-lit'),km=num('c3-km');if(l<=0||km<=0){alert('Veuillez saisir des valeurs positives.');return;}var cons=l/km*100;document.getElementById('r3-cons').textContent=cons.toFixed(2)+' L/100 km';document.getElementById('r3-kml').textContent=(km/l).toFixed(1)+' km/L';document.getElementById('r3-cost').textContent=eur(cons*1.75);var m=document.getElementById('r3-msg');if(cons<5){m.textContent='Excellente consommation — votre voiture est très sobre.';}else if(cons<=7){m.textContent='Consommation normale pour une voiture essence récente.';}else if(cons<=10){m.textContent='Consommation plutôt élevée — vérifiez la pression des pneus et votre style de conduite.';}else{m.textContent='Consommation très élevée — un contrôle mécanique peut être utile.';}show('r3');}
+function calc4(){var km=num('c4-km'),c=num('c4-cons'),p=num('c4-prix'),k=num('c4-kwh'),pk=num('c4-pkwh');if(km<=0||c<=0||p<=0||k<=0||pk<=0){alert('Veuillez saisir des valeurs positives.');return;}var gas=km/100*c*p,ev=km/100*k*pk,save=gas-ev;document.getElementById('r4-gas').textContent=eur(gas);document.getElementById('r4-ev').textContent=eur(ev);document.getElementById('r4-save').textContent=eur(save);document.getElementById('r4-msg').textContent=save>0?("L'électrique vous ferait économiser environ "+eur(save)+" par an en énergie."):("Sur ce kilométrage, l'essence coûterait moins cher en énergie — vérifiez vos tarifs de recharge.");show('r4');}
+function calc5(){var km=num('c5-km'),c95=num('c5-cons95'),p95=num('c5-p95'),p98=num('c5-p98'),c98=num('c5-cons98');if(km<=0||c95<=0||p95<=0||p98<=0||c98<=0){alert('Veuillez saisir des valeurs positives.');return;}var a95=km/100*c95*p95,a98=km/100*c98*p98,diff=a98-a95;document.getElementById('r5-95').textContent=eur(a95);document.getElementById('r5-98').textContent=eur(a98);document.getElementById('r5-diff').textContent=(diff>=0?'+':'')+eur(diff);document.getElementById('r5-msg').textContent=diff>0?('Le SP98 vous coûterait '+eur(diff)+' de plus par an — le SP95 est le meilleur choix ici.'):diff<0?('Le SP98 vous ferait économiser '+eur(-diff)+' par an dans ce cas précis.'):('Les deux carburants coûtent la même chose sur un an.');show('r5');}
+</script>
+</body>
+</html>
